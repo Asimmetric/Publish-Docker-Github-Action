@@ -186,20 +186,18 @@ useSnapshot() {
 }
 
 tagExists() {
-  for TAG in ${TAGS}; do
-    if [ "$TAG" == "latest" ]; then
-      echo "Skipping existance check for 'latest' tag"
-      continue
-    fi
-    echo "Testing existance of: ${INPUT_NAME}:${TAG}"
-    docker manifest inspect "${INPUT_NAME}:${TAG}" > /dev/null;
-    local EXISTS=$?
-    echo "EXISTS=${EXISTS}"
-    if [ ${EXISTS} == 0 ]; then
-      echo "${INPUT_NAME}:${TAG} already exists"
-      return 0
-    fi
-  done
+  if [ "${1}" == "latest" ]; then
+    echo "Skipping existance check for 'latest' tag"
+    continue
+  fi
+  echo "Testing existance of: ${INPUT_NAME}:${1}"
+  docker manifest inspect "${INPUT_NAME}:${1}" > /dev/null;
+  local EXISTS=$?
+  echo "EXISTS=${EXISTS}"
+  if [ ${EXISTS} == 0 ]; then
+    echo "${INPUT_NAME}:${1} already exists"
+    return 0
+  fi
   return 1
 }
 
