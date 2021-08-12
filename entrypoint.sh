@@ -188,7 +188,7 @@ useSnapshot() {
 tagExists() {
   if [ "${1}" == "latest" ]; then
     echo "Skipping existance check for 'latest' tag"
-    continue
+    return 1
   fi
   echo "Testing existance of: ${INPUT_NAME}:${1}"
   docker manifest inspect "${INPUT_NAME}:${1}" > /dev/null;
