@@ -5,10 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-      with:
-        ref: ${{ github.ref }}
     - name: Publish to Registry
-      uses: Asimmetric/Publish-Docker-Github-Action@${{ github.ref }}
+      uses: Asimmetric/Publish-Docker-Github-Action@${GITHUB_SHA}
       with:
         name: uxi/publish-docker-github-action
         registry: quay.io
