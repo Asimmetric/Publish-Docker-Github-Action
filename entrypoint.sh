@@ -212,7 +212,7 @@ build() {
 push() {
   for TAG in ${TAGS}; do
     if usesBoolean "${INPUT_CHECK_EXISTING}" && tagExists "$TAG"; then
-      echo "The tag already exists and check_existing is set. Skipping push"
+      echo "The tag already exists and check_existing is set. Skipping push."
     else
       docker push "${INPUT_NAME}:${TAG}"
     fi

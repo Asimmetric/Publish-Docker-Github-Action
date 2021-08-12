@@ -4,13 +4,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
     - name: Extract branch name
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
+    - uses: actions/checkout@master
+      with:
+        ref: ${{ steps.extract_branch.outputs.branch }}
     - name: Publish to Registry
-      uses: Asimmetric/Publish-Docker-Github-Action@${{ steps.extract_branch.outputs.branch }}
+      uses: Asimmetric/Publish-Docker-Github-Action@main
       with:
         name: uxi/publish-docker-github-action
         registry: quay.io
