@@ -61,14 +61,6 @@ main() {
 
   build
 
-  if usesBoolean "${INPUT_CHECK_EXISTING}" && tagExists; then
-    echo "The tag already exists and check_existing is set. Skipping push"
-    if uses "${INPUT_USERNAME}" && uses "${INPUT_PASSWORD}"; then
-      docker logout
-    fi
-    exit 0
-  fi
-
   if usesBoolean "${INPUT_NO_PUSH}"; then
     if uses "${INPUT_USERNAME}" && uses "${INPUT_PASSWORD}"; then
       docker logout
@@ -194,20 +186,18 @@ useSnapshot() {
 }
 
 tagExists() {
-  for TAG in ${TAGS}; do
-    if [ "$TAG" == "latest" ]; then
-      echo "Skipping existance check for 'latest' tag"
-      continue
-    fi
-    echo "Testing existance of: ${INPUT_NAME}:${TAG}"
-    docker manifest inspect "${INPUT_NAME}:${TAG}" > /dev/null;
-    local EXISTS=$?
-    echo "EXISTS=${EXISTS}"
-    if [ ${EXISTS} == 0 ]; then
-      echo "${INPUT_NAME}:${TAG} already exists"
-      return 0
-    fi
-  done
+  if [ "${1}" == "latest" ]; then
+    echo "Skipping existance check for 'latest' tag"
+    return 1
+  fi
+  echo "Testing existance of: ${INPUT_NAME}:${1}"
+  docker manifest inspect "${INPUT_NAME}:${1}" > /dev/null;
+  local EXISTS=$?
+  echo "EXISTS=${EXISTS}"
+  if [ ${EXISTS} == 0 ]; then
+    echo "${INPUT_NAME}:${1} already exists"
+    return 0
+  fi
   return 1
 }
 
@@ -221,7 +211,11 @@ build() {
 
 push() {
   for TAG in ${TAGS}; do
-    docker push "${INPUT_NAME}:${TAG}"
+    if usesBoolean "${INPUT_CHECK_EXISTING}" && tagExists "$TAG"; then
+      echo "The tag already exists and check_existing is set. Skipping push."
+    else
+      docker push "${INPUT_NAME}:${TAG}"
+    fi
   done
 }
 

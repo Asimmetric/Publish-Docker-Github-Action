@@ -1,0 +1,15 @@
+name: Integration Test (Docker)
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: Asimmetric/Publish-Docker-Github-Action@main
+      with:
+        name: uxi/publish-docker-github-action
+        registry: quay.io
+        username: ${{ secrets.QUAY_UXI_ROBOT_USER }}
+        password: ${{ secrets.QUAY_UXI_ROBOT_PWD }}
+        tag_names: true
