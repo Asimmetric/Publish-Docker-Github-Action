@@ -12,6 +12,6 @@ jobs:
         registry: quay.io
         username: ${{ secrets.QUAY_UXI_ROBOT_USER }}
         password: ${{ secrets.QUAY_UXI_ROBOT_PWD }}
-        tags: "latest,integration-test"
+        tags: "latest,integration-test,temp"
         check_existing: true
         tag_names: true
