@@ -4,13 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
     - uses: actions/checkout@master
-      with:
-        ref: ${{ steps.extract_branch.outputs.branch }}
     - name: Publish to Registry
       uses: Asimmetric/Publish-Docker-Github-Action@main
       with:
@@ -18,6 +12,4 @@ jobs:
         registry: quay.io
         username: ${{ secrets.QUAY_UXI_ROBOT_USER }}
         password: ${{ secrets.QUAY_UXI_ROBOT_PWD }}
-        tags: "latest,integration-test,temp"
-        check_existing: true
         tag_names: true
