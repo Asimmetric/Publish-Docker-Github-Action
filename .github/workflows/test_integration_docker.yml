@@ -1,4 +1,4 @@
-name: Integration Test
+name: Integration Test (Docker)
 on: [push]
 jobs:
   build:
@@ -6,7 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Publish to Registry
-      uses: Asimmetric/Publish-Docker-Github-Action@$GITHUB_SHA
+      uses: Asimmetric/Publish-Docker-Github-Action@dp/check-existing
       with:
         name: uxi/publish-docker-github-action
         registry: quay.io
