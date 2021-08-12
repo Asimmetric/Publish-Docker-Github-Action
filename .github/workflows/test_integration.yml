@@ -13,4 +13,5 @@ jobs:
         username: ${{ secrets.QUAY_UXI_ROBOT_USER }}
         password: ${{ secrets.QUAY_UXI_ROBOT_PWD }}
         tags: "latest,integration-test"
+        check_existing: true
         tag_names: true
